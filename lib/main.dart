@@ -101,56 +101,65 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            // Conteúdo principal
+            // Conteúdo principal com título fixo
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "LiPo - Linguagem em Portugol",
-                        style: TextStyle(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ✅ Cabeçalho fixo
+                    Text(
+                      "LiPo - Linguagem em Portugol",
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "LiPo é uma linguagem de programação educacional que utiliza palavras-chave em português para facilitar o aprendizado.\nFoi projetada para ser simples, expressiva e familiar aos falantes de português!",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+
+                    // ✅ Área rolável: filtros + conteúdo
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Filtros
+                            Wrap(
+                              spacing: 8.0,
+                              runSpacing: 8.0,
+                              children: [
+                                _buildFilterButton("Visão Geral"),
+                                _buildFilterButton("Estrutura Léxica"),
+                                _buildFilterButton("Tipos de Dados"),
+                                _buildFilterButton("Literais"),
+                                _buildFilterButton("Variáveis e Constantes"),
+                                _buildFilterButton("Operadores"),
+                                _buildFilterButton("Estruturas de Controle"),
+                                _buildFilterButton("Sistema de import"),
+                                _buildFilterButton("Comentários"),
+                                _buildFilterButton("Gramática formal"),
+                                _buildFilterButton("Exemplos"),
+                              ],
+                            ),
+                            SizedBox(height: 24),
+
+                            // Conteúdo dinâmico abaixo dos filtros
+                            _buildFilterContent(),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        "LiPo é uma linguagem de programação educacional que utiliza palavras-chave em português para facilitar o aprendizado.\nFoi projetada para ser simples, expressiva e familiar aos falantes de português!",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-
-                      // Filtros
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 8.0,
-                        children: [
-                          _buildFilterButton("Visão Geral"),
-                          _buildFilterButton("Estrutura Léxica"),
-                          _buildFilterButton("Tipos de Dados"),
-                          _buildFilterButton("Literais"),
-                          _buildFilterButton("Variáveis e Constantes"),
-                          _buildFilterButton("Operadores"),
-                          _buildFilterButton("Estruturas de Controle"),
-                          _buildFilterButton("Sistema de import"),
-                          _buildFilterButton("Comentários"),
-                          _buildFilterButton("Gramática formal"),
-                          _buildFilterButton("Exemplos"),
-                        ],
-                      ),
-                      SizedBox(height: 24),
-
-                      // Conteúdo dinâmico abaixo dos filtros
-                      _buildFilterContent(),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -191,7 +200,11 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedFilter) {
       case "Visão Geral":
         return Text(
-          "Aqui você verá uma visão geral da linguagem LiPo.",
+          "📌 Características Principais:\n\n"
+          "◾ Sintaxe em Português: Palavras-chave em português brasileiro\n"
+          "◾ Tipagem Estática: Tipos são verificados em tempo de compilação\n"
+          "◾ Inferência de Tipos: O compilador pode inferir tipos automaticamente\n"
+          "◾ Conversão Automática: Inteiros são convertidos automaticamente para reais quando necessário",
           style: TextStyle(fontSize: 18),
         );
       case "Estrutura Léxica":
@@ -255,13 +268,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text("""
-              algoritmo "Exemplo"
-              variável
-              inteiro x
-              início
-              escreva("Olá Mundo!")
-              fim
-              """, style: TextStyle(fontSize: 16, fontFamily: "monospace")),
+algoritmo "Exemplo"
+variável
+  inteiro x
+início
+  escreva("Olá Mundo!")
+fim
+""", style: TextStyle(fontSize: 16, fontFamily: "monospace")),
             ),
           ],
         );
