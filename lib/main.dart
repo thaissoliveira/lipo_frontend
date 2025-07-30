@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.symmetric(vertical: 20),
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.indigo[50],
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -65,13 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: 50,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? Colors.black
+                                  ? Colors.lightBlue[900]
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Icon(
                               icons[index],
-                              color: isSelected ? Colors.white : Colors.black54,
+                              color: isSelected ? Colors.white : Colors.lightBlue[900],
                             ),
                           ),
                         ),
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Icon(Icons.help, color: Colors.black54),
+                      child: Icon(Icons.help, color: Colors.lightBlue[900]),
                     ),
                   ),
                 ],
@@ -181,13 +181,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.grey[300],
+          color: isSelected ? Colors.lightBlue[900] : Colors.indigo[50],
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
+            color: isSelected ? Colors.white : Colors.lightBlue[900],
             fontWeight: FontWeight.bold,
           ),
         ),
