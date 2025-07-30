@@ -10,13 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MaterialApp(home: const MyHomePage(title: 'Flutter Demo Home Page'));
   }
 }
 
@@ -31,44 +25,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0; // Índice do item selecionado na sidebar
+  String selectedFilter = "Visão Geral"; // Filtro inicial
 
-  final List<IconData> icons = [
-    Icons.home_outlined,
-    Icons.menu_book_outlined,
-    // Icons.shopping_cart_outlined,
-    // Icons.person_outline,
-  ];
+  final List<IconData> icons = [Icons.home_outlined, Icons.menu_book_outlined];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white, //Cor de fundo da tela
+        color: Colors.white,
         child: Row(
           children: [
             // Sidebar
             Container(
               width: 80,
               padding: EdgeInsets.symmetric(vertical: 20),
-              margin: EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 16,
-              ), // Espaço nas laterais
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(16),
-                  topLeft: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     }),
                   ),
 
+                  // Botão de ajuda
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -115,22 +91,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(
-                        color: Colors.transparent, // Cor de fundo
-                        borderRadius: BorderRadius.circular(
-                          16,
-                        ), // Bordas arredondadas
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Icon(
-                        Icons.help, // Ícone do botão
-                        color: Colors.black54, // Cor do ícone
-                      ),
+                      child: Icon(Icons.help, color: Colors.black54),
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Espaço restante (conteúdo principal)
+            // Conteúdo principal
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
@@ -145,35 +116,39 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      
+                      SizedBox(height: 8),
+                      Text(
+                        "LiPo é uma linguagem de programação educacional que utiliza palavras-chave em português para facilitar o aprendizado.\nFoi projetada para ser simples, expressiva e familiar aos falantes de português!",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
                       SizedBox(height: 16),
 
+                      // Filtros
                       Wrap(
-                        spacing: 8.0,//Espaço horizontal entre os botões
-                        runSpacing: 8.0,// Espaço vertical entre os botões (caso quebre linha)
+                        spacing: 8.0,
+                        runSpacing: 8.0,
                         children: [
-                          FilterButton(label: "Tudo", isSelected: true),
-                          FilterButton(label: "Teste", isSelected: false),
-                          FilterButton(label: "Teste", isSelected: false),
-                          FilterButton(label: "Teste", isSelected: false),
-                          FilterButton(label: "Teste", isSelected: false),
+                          _buildFilterButton("Visão Geral"),
+                          _buildFilterButton("Estrutura Léxica"),
+                          _buildFilterButton("Tipos de Dados"),
+                          _buildFilterButton("Literais"),
+                          _buildFilterButton("Variáveis e Constantes"),
+                          _buildFilterButton("Operadores"),
+                          _buildFilterButton("Estruturas de Controle"),
+                          _buildFilterButton("Sistema de import"),
+                          _buildFilterButton("Comentários"),
+                          _buildFilterButton("Gramática formal"),
+                          _buildFilterButton("Exemplos"),
                         ],
                       ),
                       SizedBox(height: 24),
-                      Wrap(
-                        spacing: 16.0,
-                        runSpacing: 16.0,
-                        children: List.generate(8, (index) {
-                          return Container(
-                            width: 300, // Largura
-                            height: 200, // Altura
-                            decoration: BoxDecoration(
-                              color: Colors.blue[200],
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          );
-                        }),
-                      ),
+
+                      // Conteúdo dinâmico abaixo dos filtros
+                      _buildFilterContent(),
                     ],
                   ),
                 ),
@@ -184,23 +159,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
 
-class FilterButton extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const FilterButton({
-    super.key,
-    required this.label,
-    required this.isSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  /// Botão de filtro dinâmico
+  Widget _buildFilterButton(String label) {
+    bool isSelected = selectedFilter == label;
     return GestureDetector(
       onTap: () {
-        // Ação ao clicar no botão de filtro
+        setState(() {
+          selectedFilter = label;
+        });
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -212,10 +179,97 @@ class FilterButton extends StatelessWidget {
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
+  }
+
+  /// Conteúdo dinâmico de acordo com o filtro selecionado
+  Widget _buildFilterContent() {
+    switch (selectedFilter) {
+      case "Visão Geral":
+        return Text(
+          "Aqui você verá uma visão geral da linguagem LiPo.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Estrutura Léxica":
+        return Text(
+          "A estrutura léxica define as regras para formação dos tokens...",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Tipos de Dados":
+        return Text(
+          "Os tipos de dados em LiPo incluem inteiro, real, texto, etc...",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Literais":
+        return Text(
+          "Literais representam valores fixos no código...",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Variáveis e Constantes":
+        return Text(
+          "Variáveis armazenam valores mutáveis; constantes armazenam valores imutáveis.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Operadores":
+        return Text(
+          "Operadores aritméticos, relacionais e lógicos são suportados pela linguagem.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Estruturas de Controle":
+        return Text(
+          "As estruturas de controle incluem: SE, SENÃO, ENQUANTO, PARA...",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Sistema de import":
+        return Text(
+          "LiPo permite importar bibliotecas utilizando a palavra-chave 'importar'.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Comentários":
+        return Text(
+          "Comentários são escritos utilizando // para linha e /* */ para bloco.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Gramática formal":
+        return Text(
+          "A gramática formal define a sintaxe oficial da linguagem.",
+          style: TextStyle(fontSize: 18),
+        );
+      case "Exemplos":
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Exemplo de código LiPo:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text("""
+              algoritmo "Exemplo"
+              variável
+              inteiro x
+              início
+              escreva("Olá Mundo!")
+              fim
+              """, style: TextStyle(fontSize: 16, fontFamily: "monospace")),
+            ),
+          ],
+        );
+      default:
+        return Text(
+          "Selecione um filtro para ver o conteúdo.",
+          style: TextStyle(fontSize: 18),
+        );
+    }
   }
 }
